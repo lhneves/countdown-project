@@ -4,48 +4,64 @@ import {
   Container,
   IconButton,
   SimpleGrid,
+  useColorModeValue,
   useMediaQuery,
 } from '@chakra-ui/react';
 import { ArrowForwardIcon, ArrowDownIcon } from '@chakra-ui/icons';
-import { NewEventCard } from '@/components/newEventCard';
-import { ShowEventsCard } from '@/components/showEventsCard';
+import { NewEventCard } from '@/components/events/newEventCard';
+import { ShowEventsCard } from '@/components/events/showEventsCard';
 
 export default function Home() {
   const [isLargerThan48em] = useMediaQuery('(min-width: 48em)');
 
   return (
-    <Container
-      display="flex"
-      maxWidth="container.lg"
-      height="calc(100vh - 108px)"
-      flexWrap="nowrap"
-      alignItems="center"
-      justifyContent="center"
-    >
-      <Card p={3}>
-        <SimpleGrid
-          templateColumns={{
-            base: 'repeat(1, minmax(0, auto))',
-            md: 'repeat(3, minmax(0, auto))',
-          }}
-          gap={4}
-        >
-          <NewEventCard />
-          <Box
-            display="flex"
-            alignItems="center"
-            textAlign="center"
-            w={{ sm: '100%' }}
+    <>
+      <Container
+        display="flex"
+        maxWidth="container.lg"
+        height={isLargerThan48em ? '80vh' : '100vh'}
+        flexWrap="nowrap"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Card p={3}>
+          <SimpleGrid
+            templateColumns={{
+              base: 'minmax(0, auto)',
+              md: '1fr minmax(0, auto) 1fr',
+            }}
+            gap={4}
           >
-            <IconButton
-              aria-label="Create New Event Button"
-              icon={isLargerThan48em ? <ArrowForwardIcon /> : <ArrowDownIcon />}
-              w={{ base: '100%' }}
-            />
-          </Box>
-          <ShowEventsCard />
-        </SimpleGrid>
-      </Card>
-    </Container>
+            <NewEventCard />
+            <Box
+              display="flex"
+              alignItems="center"
+              textAlign="center"
+              w={{ sm: '100%' }}
+            >
+              <IconButton
+                aria-label="Create New Event Button"
+                icon={
+                  isLargerThan48em ? <ArrowForwardIcon /> : <ArrowDownIcon />
+                }
+                w={{ base: '100%' }}
+                colorScheme={useColorModeValue('purple', 'orange')}
+              />
+            </Box>
+            <ShowEventsCard />
+          </SimpleGrid>
+        </Card>
+      </Container>
+      <Container
+        display="flex"
+        maxWidth="container.lg"
+        height="100vh"
+        flexWrap="nowrap"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Card p={3} minWidth="calc(100vw - 20vw)"></Card>
+      </Container>
+    </>
   );
 }
