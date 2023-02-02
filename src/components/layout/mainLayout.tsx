@@ -18,7 +18,7 @@ const MainLayout = ({ children, router }: MainLayoutProps) => {
 
       <Navbar path={router.asPath} />
 
-      <Container maxW="container.lg" pt={14}>
+      <Container maxW="container.lg" pt={14} minHeight="100vh">
         {children}
       </Container>
     </Box>
