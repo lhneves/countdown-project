@@ -28,3 +28,19 @@ export function secondsToTimes(seconds: number): string[] {
 
   return dateArray.map((date) => zeroLeft(date));
 }
+
+export function checkIfDateIsValid(
+  date: Date,
+  year: number,
+  month: number,
+  day: number,
+) {
+  if (
+    date.getFullYear() == year &&
+    date.getMonth() == month - 1 &&
+    date.getDate() == day
+  ) {
+    return true;
+  }
+  return false;
+}

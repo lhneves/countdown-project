@@ -18,9 +18,8 @@ type EventProps = {
   min?: number;
 };
 
-export const Event = ({ name = 'Event Name', date, hour, min }: EventProps) => {
+export const EventCard = ({ name = 'Event Name', date }: EventProps) => {
   const dateFormatted = date.toLocaleDateString('pt-br');
-  const hasHoursAndMinutes = hour && min;
 
   const [diferenceInSeconds, setDiferenceInSeconds] = useState(
     dateTimeToSeconds(date) - dateTimeToSeconds(new Date()),
@@ -35,13 +34,17 @@ export const Event = ({ name = 'Event Name', date, hour, min }: EventProps) => {
     setTimes(secondsToTimes(diferenceInSeconds));
   }, [diferenceInSeconds]);
 
+  useEffect(() => {
+    setDiferenceInSeconds(
+      dateTimeToSeconds(date) - dateTimeToSeconds(new Date()),
+    );
+  }, [date]);
+
   return (
     <Card>
       <CardHeader p={3} display="flex" justifyContent="space-between">
         <Heading size="sm">{name}</Heading>
-        <Heading size="sm">
-          {dateFormatted} {hasHoursAndMinutes && `- ${hour}:${min}`}
-        </Heading>
+        <Heading size="sm">{dateFormatted}</Heading>
       </CardHeader>
       <CardBody px={2} py={2}>
         {times && (

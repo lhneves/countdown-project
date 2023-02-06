@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { ArrowForwardIcon, ArrowDownIcon } from '@chakra-ui/icons';
 import { NewEventCard } from '@/components/events/newEventCard';
-import { ShowEventsCard } from '@/components/events/showEventsCard';
+import { LastEventCard } from '@/components/events/lastEventCard';
 
 export default function Home() {
   const [isLargerThan48em] = useMediaQuery('(min-width: 48em)');
@@ -19,7 +19,7 @@ export default function Home() {
       <Container
         display="flex"
         maxWidth="container.lg"
-        height={isLargerThan48em ? '80vh' : '100vh'}
+        height={isLargerThan48em ? '80vh' : '105vh'}
         flexWrap="nowrap"
         alignItems="center"
         justifyContent="center"
@@ -41,6 +41,8 @@ export default function Home() {
             >
               <IconButton
                 aria-label="Create New Event Button"
+                form="event-form"
+                type="submit"
                 icon={
                   isLargerThan48em ? <ArrowForwardIcon /> : <ArrowDownIcon />
                 }
@@ -48,7 +50,7 @@ export default function Home() {
                 colorScheme={useColorModeValue('purple', 'orange')}
               />
             </Box>
-            <ShowEventsCard />
+            <LastEventCard />
           </SimpleGrid>
         </Card>
       </Container>

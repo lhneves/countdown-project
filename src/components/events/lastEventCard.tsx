@@ -1,4 +1,4 @@
-import { addHoursToDate } from '@/utils/date';
+import { useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -6,12 +6,23 @@ import {
   CardFooter,
   CardHeader,
   Heading,
+  Text,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { useEvents } from '@/context/eventsContexts';
 import { ArrowDownIcon } from '@chakra-ui/icons';
-import { Event } from './event';
+import { EventCard } from './eventCard';
+import { IEvent } from '@/types/event';
 
-export const ShowEventsCard = () => {
+export const LastEventCard = () => {
+  const { eventList } = useEvents();
+
+  const [event, setEvent] = useState<IEvent>();
+
+  useEffect(() => {
+    setEvent(eventList[0]);
+  }, [eventList]);
+
   return (
     <Card variant="outline">
       <CardHeader p={4}>
@@ -20,7 +31,11 @@ export const ShowEventsCard = () => {
         </Heading>
       </CardHeader>
       <CardBody p={2}>
-        <Event name="My Birthday" date={addHoursToDate(new Date(), 24 * 2)} />
+        {event ? (
+          <EventCard name={event.eventName} date={event.date} />
+        ) : (
+          <Text>Crie um evento</Text>
+        )}
       </CardBody>
       <CardFooter justifyContent="right" p={2}>
         <Button
