@@ -1,3 +1,4 @@
+import { useEvents } from '@/context/eventsContexts';
 import { IEvent } from '@/types/event';
 import { checkIfDateIsValid } from '@/utils/date';
 import {
@@ -47,6 +48,8 @@ type EventProps = {
 };
 
 export const NewEventCard = () => {
+  const { addEvent } = useEvents();
+
   return (
     <Card variant="outline" size="sm">
       <CardHeader p={4}>
@@ -86,8 +89,7 @@ export const NewEventCard = () => {
               eventName: values.eventName,
             };
 
-            // TODO: add context logic to add event
-
+            addEvent(newEvent);
             actions.resetForm();
             actions.setSubmitting(false);
           }}
