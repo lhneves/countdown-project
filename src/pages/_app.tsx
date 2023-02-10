@@ -4,11 +4,11 @@ import { ChakraProvider } from '@chakra-ui/react';
 import MainLayout from '@/components/layout/mainLayout';
 import { EventsContextProvider } from '@/context/eventsContexts';
 
-export default function App({ Component, pageProps, router }: AppProps) {
+export default function App({ Component, pageProps }: AppProps) {
   return (
     <EventsContextProvider>
       <ChakraProvider>
-        <MainLayout router={router}>
+        <MainLayout>
           <Component {...pageProps} />
         </MainLayout>
       </ChakraProvider>
