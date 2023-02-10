@@ -65,7 +65,7 @@ export const LastEventCard = () => {
           )}
         </AnimatePresence>
       </CardBody>
-      {eventList.length > 1 && (
+      {eventList.length > 0 && (
         <CardFooter justifyContent="right" p={2}>
           <Button
             colorScheme={buttonColor}
