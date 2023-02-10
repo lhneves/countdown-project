@@ -6,22 +6,32 @@ import {
   CardFooter,
   CardHeader,
   Heading,
-  Text,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useEvents } from '@/context/eventsContexts';
 import { ArrowDownIcon } from '@chakra-ui/icons';
 import { EventCard } from './eventCard';
 import { IEvent } from '@/types/event';
+import { EventCardEmpty } from './eventCardEmpty';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export const LastEventCard = () => {
-  const { eventList } = useEvents();
+  const variant = useColorModeValue('outline', 'filled');
+  const buttonColor = useColorModeValue('purple', 'orange');
 
+  const { eventList } = useEvents();
   const [event, setEvent] = useState<IEvent>();
 
   useEffect(() => {
     setEvent(eventList[0]);
   }, [eventList]);
+
+  const handleClick = () => {
+    const element = document.getElementById('allEvents');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <Card variant="outline">
@@ -31,20 +41,41 @@ export const LastEventCard = () => {
         </Heading>
       </CardHeader>
       <CardBody p={2}>
-        {event ? (
-          <EventCard name={event.eventName} date={event.date} />
-        ) : (
-          <Text>Crie um evento</Text>
-        )}
+        <AnimatePresence mode="wait" initial={false}>
+          {event ? (
+            <motion.div
+              key="lastEvent"
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <EventCard variant={variant} event={event} />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="emptyEvent"
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <EventCardEmpty />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </CardBody>
-      <CardFooter justifyContent="right" p={2}>
-        <Button
-          colorScheme={useColorModeValue('purple', 'orange')}
-          rightIcon={<ArrowDownIcon />}
-        >
-          See All Events
-        </Button>
-      </CardFooter>
+      {eventList.length > 1 && (
+        <CardFooter justifyContent="right" p={2}>
+          <Button
+            colorScheme={buttonColor}
+            rightIcon={<ArrowDownIcon />}
+            onClick={handleClick}
+          >
+            See All Events
+          </Button>
+        </CardFooter>
+      )}
     </Card>
   );
 };
