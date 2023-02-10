@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useEvents } from '@/context/eventsContexts';
 import {
   Card,
@@ -8,10 +8,36 @@ import {
   Heading,
   SimpleGrid,
 } from '@chakra-ui/react';
+import { SearchInput } from '../searchInput';
 import { EventCard } from './eventCard';
+import { IEvent } from '@/types/event';
 
 export const AllEvents = () => {
-  const { eventList } = useEvents();
+  const { eventList, searchEventByName } = useEvents();
+
+  const [eventsFiltered, setEventsFiltered] = useState<IEvent[]>();
+
+  const handleInputChange = ({
+    target,
+  }: React.ChangeEvent<HTMLInputElement>) => {
+    const eventName = target.value;
+
+    const eventsFilterByName = searchEventByName(eventName);
+
+    setEventsFiltered(eventsFilterByName);
+  };
+
+  function handleEventList() {
+    if (eventsFiltered && eventsFiltered.length > 0) {
+      return eventsFiltered;
+    }
+
+    if (eventList && eventList.length > 0) {
+      return eventList;
+    }
+
+    return [];
+  }
 
   return (
     <Container
@@ -31,6 +57,7 @@ export const AllEvents = () => {
           alignItems="center"
         >
           <Heading size="md">All Events</Heading>
+          <SearchInput onChange={handleInputChange} />
         </CardHeader>
         <CardBody p={2}>
           <SimpleGrid
@@ -40,7 +67,7 @@ export const AllEvents = () => {
               md: 'repeat(3, 1fr)',
             }}
           >
-            {eventList.map((event, index) => (
+            {handleEventList().map((event, index) => (
               <EventCard
                 variant="outline"
                 event={event}

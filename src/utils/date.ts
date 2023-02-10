@@ -7,9 +7,10 @@ export function dateTimeToSeconds(date: Date): number {
   return date.getTime() / 1000;
 }
 
-export function secondsToTimes(seconds: number): string[] {
-  const zeroLeft = (n: number) => Math.floor(n).toString().padStart(2, '0');
+export const zeroLeft = (n: number) =>
+  Math.floor(n).toString().padStart(2, '0');
 
+export function secondsToTimes(seconds: number): string[] {
   const year = Math.floor(seconds / (365 * 86400));
   const month = Math.floor((seconds % 31536000) / 2628000);
   const day = Math.floor(((seconds % 31536000) % 2628000) / 86400);
@@ -17,14 +18,7 @@ export function secondsToTimes(seconds: number): string[] {
   const min = Math.floor((seconds / 60) % 60);
   const sec = Math.floor((seconds % 60) % 60);
 
-  const longTimeArray = [year, month, day];
-  const filterLongTimeArray = longTimeArray.filter((date) => date > 0);
-  const shortTimeArray = [hour, min, sec];
-
-  const dateArray =
-    filterLongTimeArray.length > 0
-      ? longTimeArray.concat(shortTimeArray)
-      : shortTimeArray;
+  const dateArray = [year, month, day, hour, min, sec];
 
   return dateArray.map((date) => zeroLeft(date));
 }
