@@ -1,4 +1,5 @@
 import { useEvents } from '@/context/eventsContexts';
+import { v4 as uuidv4 } from 'uuid';
 import { IEvent } from '@/types/event';
 import { checkIfDateIsValid } from '@/utils/date';
 import {
@@ -73,20 +74,35 @@ export const NewEventCard = () => {
             const month = Number(values.month);
             const day = Number(values.day);
 
+            const today = new Date();
             const date = new Date(year, month - 1, day);
-            if (values.hour != '' && values.min != '') {
-              date.setHours(Number(values.hour), Number(values.min));
+            date.setHours(Number(values.hour), Number(values.min));
+
+            const isDateToday = date.toDateString() === today.toDateString();
+            const isTimeLessThenNow = date.getTime() < today.getTime();
+
+            if (isTimeLessThenNow) {
+              if (isDateToday) {
+                actions.setErrors({ hour: 'Invalid Hour and Min' });
+              } else {
+                actions.setErrors({ day: 'Date must be today or greater' });
+              }
+              actions.setSubmitting(false);
+              return;
             }
 
             const isDateValid = checkIfDateIsValid(date, year, month, day);
             if (!isDateValid) {
               actions.setErrors({ day: 'Invalid Date' });
               actions.setSubmitting(false);
+              return;
             }
 
             const newEvent: IEvent = {
+              id: uuidv4(),
               date,
               eventName: values.eventName,
+              hasReached: false,
             };
 
             addEvent(newEvent);

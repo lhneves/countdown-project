@@ -11,42 +11,12 @@ import {
   useColorModeValue,
   MenuList,
   MenuItem,
-  LayoutProps,
-  SpaceProps,
 } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import Logo from './logo';
-import ThemeToggleButton from './themeToggleButton';
+import ThemeToggleButton from './buttons/themeToggleButton';
 
-type LinkProps = {
-  href: string;
-  path: string;
-  children: React.ReactNode;
-};
-const LinkItem = ({
-  href,
-  path,
-  children,
-  ...props
-}: LayoutProps & LinkProps & SpaceProps) => {
-  const active = path === href;
-  const inactiveColor = useColorModeValue('gray200', 'whiteAlpha.900');
-
-  return (
-    <Link
-      as={NextLink}
-      href={href}
-      p={2}
-      bg={active ? 'glassTeal' : undefined}
-      color={active ? '#202023' : inactiveColor}
-      {...props}
-    >
-      {children}
-    </Link>
-  );
-};
-
-const Navbar = ({ path, ...props }: { path: string }) => {
+const Navbar = ({ ...props }) => {
   return (
     <Box
       position="fixed"
@@ -72,14 +42,16 @@ const Navbar = ({ path, ...props }: { path: string }) => {
         </Flex>
 
         <Box flex={1} textAlign="right">
-          <LinkItem
-            href="/login"
-            path={path}
+          <Link
+            as={NextLink}
+            href="https://github.com/lhneves/countdown-project"
+            p={2}
+            mr={2}
             display={{ base: 'none', md: 'inline-block' }}
-            mr={4}
           >
-            Login
-          </LinkItem>
+            View Source
+          </Link>
+
           <ThemeToggleButton />
           <Box ml={2} display={{ base: 'inline-block', md: 'none' }}>
             <Menu>
@@ -90,10 +62,7 @@ const Navbar = ({ path, ...props }: { path: string }) => {
                 variant="outline"
               />
               <MenuList>
-                <NextLink href="/login" passHref>
-                  <MenuItem>Login</MenuItem>
-                </NextLink>
-                <NextLink href="/my-events" passHref>
+                <NextLink href="#allEvents" passHref>
                   <MenuItem>My Events</MenuItem>
                 </NextLink>
                 <NextLink
