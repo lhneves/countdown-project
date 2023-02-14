@@ -24,10 +24,11 @@ export function GoogleContextProvider({
     useState<google.accounts.oauth2.TokenClient>();
 
   async function initClient() {
+    console.log(process.env.NEXT_PUBLIC_GOOGLE_API_KEY);
     await gapi.load('client:auth2', () => {
       gapi.client
         .init({
-          apiKey: process.env.GOOGLE_API_KEY,
+          apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
           discoveryDocs: [
             'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest',
           ],
@@ -44,12 +45,12 @@ export function GoogleContextProvider({
   }
 
   async function getTokenCLient() {
-    if (!process.env.GOOGLE_CLIENT_ID) {
+    if (!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID) {
       return undefined;
     }
 
     const tokenClient = await google.accounts.oauth2.initTokenClient({
-      client_id: process.env.GOOGLE_CLIENT_ID,
+      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
       scope: 'https://www.googleapis.com/auth/calendar',
       callback: (tokenResponse): void => {
         if (
