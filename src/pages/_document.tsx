@@ -10,6 +10,14 @@ export default function Document() {
         <ColorModeScript initialColorMode={themeBase.config.initialColorMode} />
         <Main />
         <NextScript />
+        <script
+          src="https://apis.google.com/js/api.js"
+          type="text/javascript"
+        ></script>
+        <script
+          src="https://accounts.google.com/gsi/client"
+          type="text/javascript"
+        ></script>
       </body>
     </Html>
   );
