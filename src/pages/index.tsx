@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
       <CreateEvent />
-      {eventList.length > 0 && <AllEvents />}
+      {eventList.length > 1 && <AllEvents />}
     </>
   );
 }
