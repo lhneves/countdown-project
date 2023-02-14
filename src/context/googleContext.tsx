@@ -5,7 +5,7 @@ type GoogleContextData = {
   handleAuthClick: () => void;
   handleSignoutClick: () => void;
   createEvent: (event: gapi.client.calendar.EventInput) => void;
-  isUserSignIn: () => boolean;
+  isUserSignIn: boolean;
 };
 
 export const GoogleContext = createContext({} as GoogleContextData);
@@ -18,6 +18,8 @@ export function GoogleContextProvider({
   children,
 }: GoogleContextProviderProps) {
   const toast = useToast();
+  const [isUserSignIn, setIsUserSignIn] = useState(false);
+
   const [tokenClient, setTokenClient] =
     useState<google.accounts.oauth2.TokenClient>();
 
@@ -49,16 +51,19 @@ export function GoogleContextProvider({
     const tokenClient = await google.accounts.oauth2.initTokenClient({
       client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
       scope: 'https://www.googleapis.com/auth/calendar',
-      prompt: '',
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      callback: (): void => {},
+      callback: (tokenResponse): void => {
+        if (
+          google.accounts.oauth2.hasGrantedAllScopes(
+            tokenResponse,
+            'https://www.googleapis.com/auth/calendar',
+          )
+        ) {
+          setIsUserSignIn(true);
+        }
+      },
     });
 
     return tokenClient;
-  }
-
-  function isUserSignIn() {
-    return gapi.client.getToken() != null;
   }
 
   function handleAuthClick() {
@@ -85,6 +90,7 @@ export function GoogleContextProvider({
           });
         });
         gapi.client.setToken(null);
+        setIsUserSignIn(false);
       }
     } else {
       console.error('Error: this.gapi not loaded');
@@ -120,7 +126,12 @@ export function GoogleContextProvider({
 
   return (
     <GoogleContext.Provider
-      value={{ handleAuthClick, handleSignoutClick, createEvent, isUserSignIn }}
+      value={{
+        handleAuthClick,
+        handleSignoutClick,
+        createEvent,
+        isUserSignIn,
+      }}
     >
       {children}
     </GoogleContext.Provider>
