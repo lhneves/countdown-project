@@ -18,6 +18,7 @@ import { dateTimeToSeconds, secondsToTimes, zeroLeft } from '@/utils/date';
 import { useInterval } from '@/hooks/useInterval';
 import { IEvent } from '@/types/event';
 import { DeleteEventPopover } from '../deleteEventPopover';
+import { GoogleCalendarButton } from '../buttons/googleCalendarButton';
 
 type EventProps = {
   event: IEvent;
@@ -125,7 +126,8 @@ export const EventCard = ({ event, variant = 'filled' }: EventProps) => {
           </Grid>
         )}
       </CardBody>
-      <CardFooter p={2} display="flex" justifyContent="right">
+      <CardFooter p={2} display="flex" justifyContent="space-between">
+        <GoogleCalendarButton event={event} />
         <DeleteEventPopover onDelete={() => deleteEventById(event.id)} />
       </CardFooter>
     </Card>
