@@ -11,12 +11,18 @@ import {
   useColorModeValue,
   MenuList,
   MenuItem,
+  Button,
 } from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
 import Logo from './logo';
+import { AiFillGoogleCircle } from 'react-icons/ai';
+import { HamburgerIcon } from '@chakra-ui/icons';
 import ThemeToggleButton from './buttons/themeToggleButton';
+import { useGoogleCalendar } from '@/context/googleContext';
 
 const Navbar = ({ ...props }) => {
+  const { handleAuthClick, handleSignoutClick, isUserSignIn } =
+    useGoogleCalendar();
+
   return (
     <Box
       position="fixed"
@@ -46,11 +52,28 @@ const Navbar = ({ ...props }) => {
             as={NextLink}
             href="https://github.com/lhneves/countdown-project"
             p={2}
-            mr={2}
             display={{ base: 'none', md: 'inline-block' }}
           >
             View Source
           </Link>
+
+          <Button
+            size="sm"
+            fontSize={13}
+            rightIcon={<AiFillGoogleCircle size={22} />}
+            height={10}
+            onClick={() => {
+              if (isUserSignIn) {
+                handleSignoutClick();
+              } else {
+                handleAuthClick();
+              }
+            }}
+            colorScheme={useColorModeValue('purple', 'orange')}
+            mx={2}
+          >
+            {isUserSignIn ? 'Sign Out' : 'Sign In'}
+          </Button>
 
           <ThemeToggleButton />
           <Box ml={2} display={{ base: 'inline-block', md: 'none' }}>
