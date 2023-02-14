@@ -11,6 +11,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     <Box as="main" pb={8}>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/clock.svg" type="image/svg+xml" />
         <title>CountDown Project</title>
       </Head>
 
