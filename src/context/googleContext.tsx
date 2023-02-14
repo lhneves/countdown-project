@@ -24,7 +24,6 @@ export function GoogleContextProvider({
     useState<google.accounts.oauth2.TokenClient>();
 
   async function initClient() {
-    console.log(process.env.NEXT_PUBLIC_GOOGLE_API_KEY);
     await gapi.load('client:auth2', () => {
       gapi.client
         .init({
