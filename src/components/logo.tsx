@@ -24,6 +24,7 @@ const Logo = () => {
       <LogoBox>
         <TimeIcon boxSize={19} />
         <Text
+          display={{ base: 'none', sm: 'inline-block' }}
           color={useColorModeValue('gray.800', 'whiteAlpha.900')}
           fontFamily="M PLUS Rounded 1c"
           fontWeight="bold"
